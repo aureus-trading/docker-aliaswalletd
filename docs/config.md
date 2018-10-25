@@ -10,7 +10,7 @@ You can use environment variables to customize config ([see docker run environme
             -e PRINTTOCONSOLE=1 \
             -e RPCUSER=mysecretrpcuser \
             -e RPCPASSWORD=mysecretrpcpassword \
-            kylemanna/spectrecoind
+            spectreproject/spectrecoind
 
 Or you can use your very own config file like that:
 
@@ -18,4 +18,4 @@ Or you can use your very own config file like that:
             -p 8333:8333 \
             -p 127.0.0.1:8332:8332 \
             -v /etc/myspectrecoin.conf:/spectrecoin/.spectrecoin/spectrecoin.conf \
-            kylemanna/spectrecoind
+            spectreproject/spectrecoind

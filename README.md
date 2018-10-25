@@ -1,10 +1,10 @@
 Spectrecoind for Docker
 ===================
 
-[![Docker Stars](https://img.shields.io/docker/stars/kylemanna/spectrecoind.svg)](https://hub.docker.com/r/kylemanna/spectrecoind/)
-[![Docker Pulls](https://img.shields.io/docker/pulls/kylemanna/spectrecoind.svg)](https://hub.docker.com/r/kylemanna/spectrecoind/)
-[![Build Status](https://travis-ci.org/kylemanna/docker-spectrecoind.svg?branch=master)](https://travis-ci.org/kylemanna/docker-spectrecoind/)
-[![ImageLayers](https://images.microbadger.com/badges/image/kylemanna/spectrecoind.svg)](https://microbadger.com/#/images/kylemanna/spectrecoind)
+[![Docker Stars](https://img.shields.io/docker/stars/spectreproject/spectrecoind.svg)](https://hub.docker.com/r/spectreproject/spectrecoind/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/spectreproject/spectrecoind.svg)](https://hub.docker.com/r/spectreproject/spectrecoind/)
+[![Build Status](https://travis-ci.org/spectreproject/docker-spectrecoind.svg?branch=master)](https://travis-ci.org/spectreproject/docker-spectrecoind/)
+[![ImageLayers](https://images.microbadger.com/badges/image/spectreproject/spectrecoind.svg)](https://microbadger.com/#/images/spectreproject/spectrecoind)
 
 Docker image that runs the Spectrecoin spectrecoind node in a container for easy deployment.
 
@@ -24,7 +24,7 @@ Really Fast Quick Start
 
 One liner for Ubuntu 14.04 LTS machines with JSON-RPC enabled on localhost and adds upstart init script:
 
-    curl https://raw.githubusercontent.com/kylemanna/docker-spectrecoind/master/bootstrap-host.sh | sh -s trusty
+    curl https://raw.githubusercontent.com/spectreproject/docker-spectrecoind/master/bootstrap-host.sh | sh -s trusty
 
 
 Quick Start
@@ -36,13 +36,13 @@ Quick Start
         docker run -v spectrecoind-data:/spectrecoin --name=spectrecoind-node -d \
             -p 8333:8333 \
             -p 127.0.0.1:8332:8332 \
-            kylemanna/spectrecoind
+            spectreproject/spectrecoind
 
 2. Verify that the container is running and spectrecoind node is downloading the blockchain
 
         $ docker ps
         CONTAINER ID        IMAGE                         COMMAND             CREATED             STATUS              PORTS                                              NAMES
-        d0e1076b2dca        kylemanna/spectrecoind:latest     "spectrecoin_oneshot"       2 seconds ago       Up 1 seconds        127.0.0.1:8332->8332/tcp, 0.0.0.0:8333->8333/tcp   spectrecoind-node
+        d0e1076b2dca        spectreproject/spectrecoind:latest     "spectrecoin_oneshot"       2 seconds ago       Up 1 seconds        127.0.0.1:8332->8332/tcp, 0.0.0.0:8333->8333/tcp   spectrecoind-node
 
 3. You can then access the daemon's output thanks to the [docker logs command]( https://docs.docker.com/reference/commandline/cli/#logs)
 

@@ -4,7 +4,7 @@
 #
 set -ex
 
-BTC_IMAGE=${BTC_IMAGE:-kylemanna/spectrecoind}
+BTC_IMAGE=${BTC_IMAGE:-spectreproject/spectrecoind}
 
 distro=$1
 shift
@@ -49,7 +49,7 @@ docker volume create --name=spectrecoind-data
 docker run -v spectrecoind-data:/spectrecoin --rm $BTC_IMAGE spectrecoin_init
 
 # Start spectrecoind via upstart and docker
-curl https://raw.githubusercontent.com/kylemanna/docker-spectrecoind/master/upstart.init > /etc/init/docker-spectrecoind.conf
+curl https://raw.githubusercontent.com/spectreproject/docker-spectrecoind/master/upstart.init > /etc/init/docker-spectrecoind.conf
 start docker-spectrecoind
 
 set +ex

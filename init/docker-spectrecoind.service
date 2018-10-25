@@ -1,6 +1,6 @@
 [Unit]
 Description=Spectrecoind Docker Container
-Documentation=https://github.com/kylemanna/docker-spectrecoind
+Documentation=https://github.com/spectreproject/docker-spectrecoind
 After=network.target docker.socket
 Requires=docker.socket
 
@@ -11,7 +11,7 @@ Restart=always
 # Modify IP6_PREFIX to match network config
 Environment="NAME=spectrecoind"
 Environment="DATA_VOL=spectrecoind-data"
-Environment="IMG=kylemanna/spectrecoind:dev"
+Environment="IMG=spectreproject/spectrecoind:dev"
 Environment="PORT=8333:8333/tcp"
 
 # To override environment variables, use local configuration directory:

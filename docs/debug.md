@@ -14,7 +14,7 @@
 
 *Note:* This container will be run in the same way as the spectrecoind node, but will not connect to already running containers or processes.
 
-    docker run -v spectrecoind-data:/spectrecoin --rm -it kylemanna/spectrecoind bash -l
+    docker run -v spectrecoind-data:/spectrecoin --rm -it spectreproject/spectrecoind bash -l
 
 You can also attach bash into running container to debug running spectrecoind
 
