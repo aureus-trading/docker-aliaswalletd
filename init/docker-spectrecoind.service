@@ -25,7 +25,7 @@ ExecStartPre=-/usr/bin/docker rm -f $NAME
 ExecStartPre=-/usr/bin/docker pull $IMG
 
 # Main process
-ExecStart=/usr/bin/docker run --rm -v ${DATA_VOL}:/spectrecoin --name ${NAME} -p ${PORT} ${IMG} btc_oneshot $ARGS
+ExecStart=/usr/bin/docker run --rm -v ${DATA_VOL}:/spectrecoin --name ${NAME} -p ${PORT} ${IMG} spectrecoin_oneshot $ARGS
 
 [Install]
 WantedBy=multi-user.target

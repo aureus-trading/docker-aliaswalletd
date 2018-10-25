@@ -14,12 +14,7 @@ ENV GROUP_ID ${GROUP_ID:-1000}
 RUN groupadd -g ${GROUP_ID} spectrecoin \
 	&& useradd -u ${USER_ID} -g spectrecoin -s /bin/bash -m -d /spectrecoin spectrecoin
 
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C70EF1F0305A1ADB9986DBD8D46F45428842CE5E && \
-    echo "deb http://ppa.launchpad.net/spectrecoin/spectrecoin/ubuntu xenial main" > /etc/apt/sources.list.d/spectrecoin.list
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-		spectrecoind \
-	&& apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+COPY --from=spectreproject/spectre-ubuntu:2.1.0 /usr/local/bin/spectrecoind /usr/local/bin/
 
 # grab gosu for easy step-down from root
 ENV GOSU_VERSION 1.7
@@ -51,4 +46,4 @@ WORKDIR /spectrecoin
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
 
-CMD ["btc_oneshot"]
+CMD ["spectrecoin_oneshot"]

@@ -46,7 +46,7 @@ fi
 
 # Initialize the data container
 docker volume create --name=spectrecoind-data
-docker run -v spectrecoind-data:/spectrecoin --rm $BTC_IMAGE btc_init
+docker run -v spectrecoind-data:/spectrecoin --rm $BTC_IMAGE spectrecoin_init
 
 # Start spectrecoind via upstart and docker
 curl https://raw.githubusercontent.com/kylemanna/docker-spectrecoind/master/upstart.init > /etc/init/docker-spectrecoind.conf

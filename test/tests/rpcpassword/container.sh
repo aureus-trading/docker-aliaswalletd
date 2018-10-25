@@ -2,13 +2,13 @@
 set -e
 
 # Generate the password the first time
-btc_init 2>/dev/null
+spectrecoin_init 2>/dev/null
 eval `grep rpcpassword $HOME/.spectrecoin/spectrecoin.conf`
 rpcpassword1=$rpcpassword
 
 # Generate the password again
 rm ~/.spectrecoin/spectrecoin.conf
-btc_init 2>/dev/null
+spectrecoin_init 2>/dev/null
 eval `grep rpcpassword $HOME/.spectrecoin/spectrecoin.conf`
 rpcpassword2=$rpcpassword
 
