@@ -1,4 +1,4 @@
-FROM ubuntu:xenial
+FROM ubuntu:18.04
 MAINTAINER Kyle Manna <kyle@kylemanna.com>
 
 ARG USER_ID
@@ -21,22 +21,30 @@ ENV GOSU_VERSION 1.7
 RUN set -x \
 	&& apt-get update && apt-get install -y --no-install-recommends \
 		ca-certificates \
-        mc \
-        libboost-chrono1.58.0 \
-        libboost-filesystem1.58.0 \
-        libboost-program-options1.58.0 \
-        libboost-thread1.58.0 \
-        libcap2 \
-        libevent-2.0-5 \
-        libtool \
-        libseccomp2 \
-        obfs4proxy \
-        tor \
+		dirmngr \
+		gpg \
+		libboost-chrono1.65.1 \
+		libboost-filesystem1.65.1 \
+		libboost-program-options1.65.1 \
+		libboost-thread1.65.1 \
+		libcap2 \
+		libevent-2.1-6 \
+		libtool \
+		libseccomp2 \
+		mc \
+		obfs4proxy \
+		tor \
 		wget \
 	&& wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" \
 	&& wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture).asc" \
 	&& export GNUPGHOME="$(mktemp -d)" \
-	&& gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
+	&& for server in $(shuf -e ha.pool.sks-keyservers.net \
+			hkp://p80.pool.sks-keyservers.net:80 \
+			keyserver.ubuntu.com \
+			hkp://keyserver.ubuntu.com:80 \
+			pgp.mit.edu) ; do \
+		gpg --keyserver "$server" --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 && break || : ; \
+	done \
 	&& gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
 	&& rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc \
 	&& chmod +x /usr/local/bin/gosu \
