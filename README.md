@@ -8,6 +8,7 @@ Spectrecoind for Docker
 
 Docker image that runs the Spectrecoin spectrecoind node in a container for easy deployment.
 
+This is a fork of [kylemanna/docker-bitcoind](https://github.com/kylemanna/docker-bitcoind), thx for the great work!
 
 Requirements
 ------------
