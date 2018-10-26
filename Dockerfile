@@ -14,8 +14,6 @@ ENV GROUP_ID ${GROUP_ID:-1000}
 RUN groupadd -g ${GROUP_ID} spectrecoin \
 	&& useradd -u ${USER_ID} -g spectrecoin -s /bin/bash -m -d /spectrecoin spectrecoin
 
-COPY --from=spectreproject/spectre-ubuntu:2.1.0 /usr/local/bin/spectrecoind /usr/local/bin/
-
 # grab gosu for easy step-down from root
 ENV GOSU_VERSION 1.7
 RUN set -x \
@@ -59,6 +57,13 @@ ADD ./bin /usr/local/bin
 VOLUME ["/spectrecoin"]
 
 EXPOSE 8332 8333 18332 18333
+
+# Download and install daemon binary
+ARG DOWNLOAD_URL=https://github.com/spectrecoin/spectre/releases/download/latest/Spectrecoin-latest-Ubuntu.tgz
+ADD ${DOWNLOAD_URL} /tmp/spectrecoin.tgz
+RUN cd / \
+ && tar xzf /tmp/spectrecoin.tgz \
+ && rm -f /usr/local/bin/spectrecoin
 
 WORKDIR /spectrecoin
 
