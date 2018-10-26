@@ -1,5 +1,5 @@
 FROM ubuntu:18.04
-MAINTAINER Kyle Manna <kyle@kylemanna.com>
+MAINTAINER HLXEasy <hlxeasy@gmail.com>
 
 ARG USER_ID
 ARG GROUP_ID
