@@ -40,7 +40,7 @@ pipeline {
             steps {
                 script {
                     docker.build(
-                            "spectreproject/spectre-debian",
+                            "spectreproject/docker-spectrecoind",
                             "--rm --build-arg DOWNLOAD_URL=https://github.com/spectrecoin/spectre/releases/download/latest/Spectrecoin-latest-Ubuntu.tgz ."
                     )
                 }
@@ -53,7 +53,7 @@ pipeline {
             steps {
                 script {
                     def spectre_image = docker.build(
-                            "spectreproject/spectre-debian",
+                            "spectreproject/docker-spectrecoind",
                             "--rm --build-arg DOWNLOAD_URL=https://github.com/spectrecoin/spectre/releases/download/latest/Spectrecoin-latest-Ubuntu.tgz ."
                     )
                     docker.withRegistry('https://registry.hub.docker.com', '051efa8c-aebd-40f7-9cfd-0053c413266e') {
@@ -69,7 +69,7 @@ pipeline {
             steps {
                 script {
                     def spectre_image = docker.build(
-                            "spectreproject/spectre-debian",
+                            "spectreproject/docker-spectrecoind",
                             "--rm --build-arg DOWNLOAD_URL=https://github.com/spectrecoin/spectre/releases/download/latest/Spectrecoin-${SPECTRECOIN_RELEASE}-Ubuntu.tgz ."
                     )
                     docker.withRegistry('https://registry.hub.docker.com', '051efa8c-aebd-40f7-9cfd-0053c413266e') {
