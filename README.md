@@ -1,13 +1,14 @@
-Bitcoind for Docker
+Spectrecoind for Docker
 ===================
 
-[![Docker Stars](https://img.shields.io/docker/stars/kylemanna/bitcoind.svg)](https://hub.docker.com/r/kylemanna/bitcoind/)
-[![Docker Pulls](https://img.shields.io/docker/pulls/kylemanna/bitcoind.svg)](https://hub.docker.com/r/kylemanna/bitcoind/)
-[![Build Status](https://travis-ci.org/kylemanna/docker-bitcoind.svg?branch=master)](https://travis-ci.org/kylemanna/docker-bitcoind/)
-[![ImageLayers](https://images.microbadger.com/badges/image/kylemanna/bitcoind.svg)](https://microbadger.com/#/images/kylemanna/bitcoind)
+[![Docker Stars](https://img.shields.io/docker/stars/spectreproject/spectrecoind.svg)](https://hub.docker.com/r/spectreproject/spectrecoind/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/spectreproject/spectrecoind.svg)](https://hub.docker.com/r/spectreproject/spectrecoind/)
+[![Build Status](https://travis-ci.org/spectreproject/docker-spectrecoind.svg?branch=master)](https://travis-ci.org/spectreproject/docker-spectrecoind/)
+[![ImageLayers](https://images.microbadger.com/badges/image/spectreproject/spectrecoind.svg)](https://microbadger.com/#/images/spectreproject/spectrecoind)
 
-Docker image that runs the Bitcoin bitcoind node in a container for easy deployment.
+Docker image that runs the Spectrecoin spectrecoind node in a container for easy deployment.
 
+This is a fork of [kylemanna/docker-bitcoind](https://github.com/kylemanna/docker-bitcoind), thx for the great work!
 
 Requirements
 ------------
@@ -24,29 +25,29 @@ Really Fast Quick Start
 
 One liner for Ubuntu 14.04 LTS machines with JSON-RPC enabled on localhost and adds upstart init script:
 
-    curl https://raw.githubusercontent.com/kylemanna/docker-bitcoind/master/bootstrap-host.sh | sh -s trusty
+    curl https://raw.githubusercontent.com/spectreproject/docker-spectrecoind/master/bootstrap-host.sh | sh -s trusty
 
 
 Quick Start
 -----------
 
-1. Create a `bitcoind-data` volume to persist the bitcoind blockchain data, should exit immediately.  The `bitcoind-data` container will store the blockchain when the node container is recreated (software upgrade, reboot, etc):
+1. Create a `spectrecoind-data` volume to persist the spectrecoind blockchain data, should exit immediately.  The `spectrecoind-data` container will store the blockchain when the node container is recreated (software upgrade, reboot, etc):
 
-        docker volume create --name=bitcoind-data
-        docker run -v bitcoind-data:/bitcoin --name=bitcoind-node -d \
+        docker volume create --name=spectrecoind-data
+        docker run -v spectrecoind-data:/spectrecoin --name=spectrecoind-node -d \
             -p 8333:8333 \
             -p 127.0.0.1:8332:8332 \
-            kylemanna/bitcoind
+            spectreproject/spectrecoind
 
-2. Verify that the container is running and bitcoind node is downloading the blockchain
+2. Verify that the container is running and spectrecoind node is downloading the blockchain
 
         $ docker ps
         CONTAINER ID        IMAGE                         COMMAND             CREATED             STATUS              PORTS                                              NAMES
-        d0e1076b2dca        kylemanna/bitcoind:latest     "btc_oneshot"       2 seconds ago       Up 1 seconds        127.0.0.1:8332->8332/tcp, 0.0.0.0:8333->8333/tcp   bitcoind-node
+        d0e1076b2dca        spectreproject/spectrecoind:latest     "spectrecoin_oneshot"       2 seconds ago       Up 1 seconds        127.0.0.1:8332->8332/tcp, 0.0.0.0:8333->8333/tcp   spectrecoind-node
 
 3. You can then access the daemon's output thanks to the [docker logs command]( https://docs.docker.com/reference/commandline/cli/#logs)
 
-        docker logs -f bitcoind-node
+        docker logs -f spectrecoind-node
 
 4. Install optional init scripts for upstart and systemd are in the `init` directory.
 

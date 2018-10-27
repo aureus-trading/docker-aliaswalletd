@@ -1,36 +1,48 @@
-FROM ubuntu:xenial
-MAINTAINER Kyle Manna <kyle@kylemanna.com>
+FROM ubuntu:18.04
+MAINTAINER HLXEasy <hlxeasy@gmail.com>
 
 ARG USER_ID
 ARG GROUP_ID
 
-ENV HOME /bitcoin
+ENV HOME /spectrecoin
 
 # add user with specified (or default) user/group ids
 ENV USER_ID ${USER_ID:-1000}
 ENV GROUP_ID ${GROUP_ID:-1000}
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
-RUN groupadd -g ${GROUP_ID} bitcoin \
-	&& useradd -u ${USER_ID} -g bitcoin -s /bin/bash -m -d /bitcoin bitcoin
-
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C70EF1F0305A1ADB9986DBD8D46F45428842CE5E && \
-    echo "deb http://ppa.launchpad.net/bitcoin/bitcoin/ubuntu xenial main" > /etc/apt/sources.list.d/bitcoin.list
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-		bitcoind \
-	&& apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN groupadd -g ${GROUP_ID} spectrecoin \
+	&& useradd -u ${USER_ID} -g spectrecoin -s /bin/bash -m -d /spectrecoin spectrecoin
 
 # grab gosu for easy step-down from root
 ENV GOSU_VERSION 1.7
 RUN set -x \
 	&& apt-get update && apt-get install -y --no-install-recommends \
 		ca-certificates \
+		dirmngr \
+		gpg \
+		libboost-chrono1.65.1 \
+		libboost-filesystem1.65.1 \
+		libboost-program-options1.65.1 \
+		libboost-thread1.65.1 \
+		libcap2 \
+		libevent-2.1-6 \
+		libtool \
+		libseccomp2 \
+		mc \
+		obfs4proxy \
+		tor \
 		wget \
 	&& wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" \
 	&& wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture).asc" \
 	&& export GNUPGHOME="$(mktemp -d)" \
-	&& gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
+	&& for server in $(shuf -e ha.pool.sks-keyservers.net \
+			hkp://p80.pool.sks-keyservers.net:80 \
+			keyserver.ubuntu.com \
+			hkp://keyserver.ubuntu.com:80 \
+			pgp.mit.edu) ; do \
+		gpg --keyserver "$server" --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 && break || : ; \
+	done \
 	&& gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
 	&& rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc \
 	&& chmod +x /usr/local/bin/gosu \
@@ -42,13 +54,20 @@ RUN set -x \
 
 ADD ./bin /usr/local/bin
 
-VOLUME ["/bitcoin"]
+VOLUME ["/spectrecoin"]
 
 EXPOSE 8332 8333 18332 18333
 
-WORKDIR /bitcoin
+# Download and install daemon binary
+ARG DOWNLOAD_URL=https://github.com/spectrecoin/spectre/releases/download/latest/Spectrecoin-latest-Ubuntu.tgz
+ADD ${DOWNLOAD_URL} /tmp/spectrecoin.tgz
+RUN cd / \
+ && tar xzf /tmp/spectrecoin.tgz \
+ && rm -f /usr/local/bin/spectrecoin
+
+WORKDIR /spectrecoin
 
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
 
-CMD ["btc_oneshot"]
+CMD ["spectrecoin_oneshot"]

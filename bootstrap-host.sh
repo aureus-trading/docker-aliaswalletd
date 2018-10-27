@@ -4,7 +4,7 @@
 #
 set -ex
 
-BTC_IMAGE=${BTC_IMAGE:-kylemanna/bitcoind}
+SPECTRECOIN_IMAGE=${SPECTRECOIN_IMAGE:-spectreproject/spectrecoind}
 
 distro=$1
 shift
@@ -14,7 +14,7 @@ memtotal=$(grep ^MemTotal /proc/meminfo | awk '{print int($2/1024) }')
 #
 # Only do swap hack if needed
 #
-if [ $memtotal -lt 2048 -a $(swapon -s | wc -l) -lt 2 ]; then
+if [ ${memtotal} -lt 2048 -a $(swapon -s | wc -l) -lt 2 ]; then
     fallocate -l 2048M /swap || dd if=/dev/zero of=/swap bs=1M count=2048
     mkswap /swap
     grep -q "^/swap" /etc/fstab || echo "/swap swap swap defaults 0 0" >> /etc/fstab
@@ -35,23 +35,23 @@ if [ "$distro" = "trusty" -o "$distro" = "ubuntu:14.04" ]; then
 fi
 
 # Always clean-up, but fail successfully
-docker kill bitcoind-node 2>/dev/null || true
-docker rm bitcoind-node 2>/dev/null || true
-stop docker-bitcoind 2>/dev/null || true
+docker kill spectrecoind-node 2>/dev/null || true
+docker rm spectrecoind-node 2>/dev/null || true
+stop docker-spectrecoind 2>/dev/null || true
 
 # Always pull remote images to avoid caching issues
-if [ -z "${BTC_IMAGE##*/*}" ]; then
-    docker pull $BTC_IMAGE
+if [ -z "${SPECTRECOIN_IMAGE##*/*}" ]; then
+    docker pull ${SPECTRECOIN_IMAGE}
 fi
 
 # Initialize the data container
-docker volume create --name=bitcoind-data
-docker run -v bitcoind-data:/bitcoin --rm $BTC_IMAGE btc_init
+docker volume create --name=spectrecoind-data
+docker run -v spectrecoind-data:/spectrecoin --rm ${SPECTRECOIN_IMAGE} spectrecoin_init
 
-# Start bitcoind via upstart and docker
-curl https://raw.githubusercontent.com/kylemanna/docker-bitcoind/master/upstart.init > /etc/init/docker-bitcoind.conf
-start docker-bitcoind
+# Start spectrecoind via upstart and docker
+curl https://raw.githubusercontent.com/spectreproject/docker-spectrecoind/master/upstart.init > /etc/init/docker-spectrecoind.conf
+start docker-spectrecoind
 
 set +ex
-echo "Resulting bitcoin.conf:"
-docker run -v bitcoind-data:/bitcoin --rm $BTC_IMAGE cat /bitcoin/.bitcoin/bitcoin.conf
+echo "Resulting spectrecoin.conf:"
+docker run -v spectrecoind-data:/spectrecoin --rm ${SPECTRECOIN_IMAGE} cat /spectrecoin/.spectrecoin/spectrecoin.conf
