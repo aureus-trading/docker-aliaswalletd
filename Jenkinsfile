@@ -13,8 +13,10 @@ pipeline {
         // In case another branch beside master or develop should be deployed, enter it here
         BRANCH_TO_DEPLOY = 'xyz'
         GITHUB_TOKEN = credentials('cdc81429-53c7-4521-81e9-83a7992bca76')
-        SPECTRECOIN_RELEASE='2.2.0'
         DISCORD_WEBHOOK = credentials('991ce248-5da9-4068-9aea-8a6c2c388a19')
+    }
+    parameters {
+        string(name: 'SPECTRECOIN_RELEASE', defaultValue: '2.2.0', description: 'Which release of Spectrecoin should be used?')
     }
     stages {
         stage('Notification') {
@@ -70,7 +72,7 @@ pipeline {
                 script {
                     def spectre_image = docker.build(
                             "spectreproject/docker-spectrecoind",
-                            "--rm --build-arg DOWNLOAD_URL=https://github.com/spectrecoin/spectre/releases/download/latest/Spectrecoin-${SPECTRECOIN_RELEASE}-Ubuntu.tgz ."
+                            "--rm --build-arg DOWNLOAD_URL=https://github.com/spectrecoin/spectre/releases/download/${SPECTRECOIN_RELEASE}/Spectrecoin-${SPECTRECOIN_RELEASE}-Ubuntu.tgz ."
                     )
                     docker.withRegistry('https://registry.hub.docker.com', '051efa8c-aebd-40f7-9cfd-0053c413266e') {
                         spectre_image.push("${SPECTRECOIN_RELEASE}")
