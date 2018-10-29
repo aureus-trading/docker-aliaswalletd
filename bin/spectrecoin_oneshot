@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -ex
+
+# Generate spectrecoin.conf
+spectrecoin_init
+
+if [ $# -gt 0 ]; then
+    args=("$@")
+else
+#    args=("-rpcallowip=::/0")
+    args=("-rpcallowip=*")
+fi
+
+exec spectrecoind "${args[@]}"
