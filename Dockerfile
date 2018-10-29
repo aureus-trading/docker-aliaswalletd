@@ -63,7 +63,7 @@ ARG DOWNLOAD_URL=https://github.com/spectrecoin/spectre/releases/download/latest
 ADD ${DOWNLOAD_URL} /tmp/spectrecoin.tgz
 RUN cd / \
  && tar xzf /tmp/spectrecoin.tgz \
- && rm -f /usr/local/bin/spectrecoin
+ && rm -f /usr/local/bin/spectrecoin /tmp/spectrecoin.tgz
 
 WORKDIR /spectrecoin
 
