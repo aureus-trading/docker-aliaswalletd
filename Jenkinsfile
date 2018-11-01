@@ -33,6 +33,13 @@ pipeline {
                 )
             }
         }
+        stage('Pull base image') {
+            steps {
+                script {
+                    sh "docker pull ubuntu:18.04"
+                }
+            }
+        }
         stage('Just build Spectrecoin image') {
             when {
                 not {
