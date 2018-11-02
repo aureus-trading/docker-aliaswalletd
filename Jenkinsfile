@@ -36,40 +36,32 @@ pipeline {
                 )
             }
         }
-        stage('Pull base image') {
-            steps {
-                script {
-                    sh "docker pull ubuntu:18.04"
-                }
-            }
-        }
-        stage('Just build Spectrecoin image') {
+        stage('Build Spectrecoin image') {
             when {
                 not {
-                    anyOf { branch 'develop'; branch 'master'; branch "${BRANCH_TO_DEPLOY}" }
+                    branch 'master'
                 }
             }
             steps {
                 script {
-                    docker.build(
-                            "spectreproject/docker-spectrecoind",
-                            "--rm --build-arg DOWNLOAD_URL=https://github.com/spectrecoin/spectre/releases/download/latest/Spectrecoin-latest-Ubuntu.tgz ."
-                    )
+                    docker.withRegistry('https://registry.hub.docker.com', '051efa8c-aebd-40f7-9cfd-0053c413266e') {
+                        sh "docker build \\\n" +
+                                "--rm \\\n" +
+                                "--build-arg DOWNLOAD_URL=https://github.com/spectrecoin/spectre/releases/download/latest/Spectrecoin-latest-Ubuntu.tgz \\\n" +
+                                "-t spectreproject/docker-spectrecoind:latest \\\n" +
+                                "."
+                    }
                 }
             }
         }
-        stage('Build and upload Spectrecoin image (develop)') {
+        stage('Upload Spectrecoin image (develop)') {
             when {
                 anyOf { branch 'develop'; branch "${BRANCH_TO_DEPLOY}" }
             }
             steps {
                 script {
-                    def spectre_image = docker.build(
-                            "spectreproject/docker-spectrecoind",
-                            "--rm --build-arg DOWNLOAD_URL=https://github.com/spectrecoin/spectre/releases/download/latest/Spectrecoin-latest-Ubuntu.tgz ."
-                    )
                     docker.withRegistry('https://registry.hub.docker.com', '051efa8c-aebd-40f7-9cfd-0053c413266e') {
-                        spectre_image.push("latest")
+                        sh "docker push spectreproject/docker-spectrecoind:latest"
                     }
                 }
             }
@@ -80,12 +72,13 @@ pipeline {
             }
             steps {
                 script {
-                    def spectre_image = docker.build(
-                            "spectreproject/docker-spectrecoind",
-                            "--rm --build-arg DOWNLOAD_URL=https://github.com/spectrecoin/spectre/releases/download/${SPECTRECOIN_RELEASE}/Spectrecoin-${SPECTRECOIN_RELEASE}-Ubuntu.tgz ."
-                    )
                     docker.withRegistry('https://registry.hub.docker.com', '051efa8c-aebd-40f7-9cfd-0053c413266e') {
-                        spectre_image.push("${SPECTRECOIN_RELEASE}")
+                        sh "docker build \\\n" +
+                                "--rm \\\n" +
+                                "--build-arg DOWNLOAD_URL=https://github.com/spectrecoin/spectre/releases/download/${SPECTRECOIN_RELEASE}/Spectrecoin-${SPECTRECOIN_RELEASE}-Ubuntu.tgz \\\n" +
+                                "-t spectreproject/docker-spectrecoind:${SPECTRECOIN_RELEASE} \\\n" +
+                                "."
+                        sh "docker push spectreproject/docker-spectrecoind:${SPECTRECOIN_RELEASE}"
                     }
                 }
             }
