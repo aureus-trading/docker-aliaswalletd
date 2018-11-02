@@ -44,7 +44,7 @@ pipeline {
             }
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', '051efa8c-aebd-40f7-9cfd-0053c413266e') {
+                    withDockerRegistry(credentialsId: '051efa8c-aebd-40f7-9cfd-0053c413266e') {
                         sh "docker build \\\n" +
                                 "--rm \\\n" +
                                 "--build-arg DOWNLOAD_URL=https://github.com/spectrecoin/spectre/releases/download/latest/Spectrecoin-latest-Ubuntu.tgz \\\n" +
@@ -60,7 +60,7 @@ pipeline {
             }
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', '051efa8c-aebd-40f7-9cfd-0053c413266e') {
+                    withDockerRegistry(credentialsId: '051efa8c-aebd-40f7-9cfd-0053c413266e') {
                         sh "docker push spectreproject/docker-spectrecoind:latest"
                     }
                 }
@@ -72,7 +72,7 @@ pipeline {
             }
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', '051efa8c-aebd-40f7-9cfd-0053c413266e') {
+                    withDockerRegistry(credentialsId: '051efa8c-aebd-40f7-9cfd-0053c413266e') {
                         sh "docker build \\\n" +
                                 "--rm \\\n" +
                                 "--build-arg DOWNLOAD_URL=https://github.com/spectrecoin/spectre/releases/download/${SPECTRECOIN_RELEASE}/Spectrecoin-${SPECTRECOIN_RELEASE}-Ubuntu.tgz \\\n" +
