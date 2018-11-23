@@ -3,7 +3,7 @@ Spectrecoind for Docker
 
 [![Docker Stars](https://img.shields.io/docker/stars/spectreproject/docker-spectrecoind.svg)](https://hub.docker.com/r/spectreproject/docker-spectrecoind/)
 [![Docker Pulls](https://img.shields.io/docker/pulls/spectreproject/docker-spectrecoind.svg)](https://hub.docker.com/r/spectreproject/docker-spectrecoind/)
-[![Build Status](https://travis-ci.org/spectreproject/docker-spectrecoind.svg?branch=master)](https://travis-ci.org/spectreproject/docker-spectrecoind/)
+[![Build Status](https://ci.spectreproject.io/buildStatus/icon?job=Spectrecoin/docker-spectrecoind/develop/)](https://ci.spectreproject.io/job/Spectrecoin/job/docker-spectrecoind/job/develop/)
 [![ImageLayers](https://images.microbadger.com/badges/image/spectreproject/docker-spectrecoind.svg)](https://microbadger.com/#/images/spectreproject/docker-spectrecoind)
 
 Docker image that runs the Spectrecoin spectrecoind node in a container for easy deployment.
