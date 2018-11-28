@@ -18,6 +18,7 @@ pipeline {
     }
     parameters {
         string(name: 'SPECTRECOIN_RELEASE', defaultValue: '2.1.0', description: 'Which release of Spectrecoin should be used?')
+        string(name: 'GIT_COMMIT_SHORT', defaultValue: '', description: 'Git short commit, which is part of the name of required archive.')
     }
     stages {
         stage('Notification') {
@@ -47,7 +48,7 @@ pipeline {
                     withDockerRegistry(credentialsId: '051efa8c-aebd-40f7-9cfd-0053c413266e') {
                         sh "docker build \\\n" +
                                 "--rm \\\n" +
-                                "--build-arg DOWNLOAD_URL=https://github.com/spectrecoin/spectre/releases/download/${SPECTRECOIN_RELEASE}/Spectrecoin-${SPECTRECOIN_RELEASE}-Ubuntu.tgz \\\n" +
+                                "--build-arg DOWNLOAD_URL=https://github.com/spectrecoin/spectre/releases/download/${SPECTRECOIN_RELEASE}/Spectrecoin-${SPECTRECOIN_RELEASE}-${GIT_COMMIT_SHORT}-Ubuntu.tgz \\\n" +
                                 "-t spectreproject/docker-spectrecoind:${SPECTRECOIN_RELEASE} \\\n" +
                                 "."
                     }
@@ -75,7 +76,7 @@ pipeline {
                     withDockerRegistry(credentialsId: '051efa8c-aebd-40f7-9cfd-0053c413266e') {
                         sh "docker build \\\n" +
                                 "--rm \\\n" +
-                                "--build-arg DOWNLOAD_URL=https://github.com/spectrecoin/spectre/releases/download/${SPECTRECOIN_RELEASE}/Spectrecoin-${SPECTRECOIN_RELEASE}-Ubuntu.tgz \\\n" +
+                                "--build-arg DOWNLOAD_URL=https://github.com/spectrecoin/spectre/releases/download/${SPECTRECOIN_RELEASE}/Spectrecoin-${SPECTRECOIN_RELEASE}-${GIT_COMMIT_SHORT}-Ubuntu.tgz \\\n" +
                                 "-t spectreproject/docker-spectrecoind:${SPECTRECOIN_RELEASE} \\\n" +
                                 "."
                         sh "docker push spectreproject/docker-spectrecoind:${SPECTRECOIN_RELEASE}"
