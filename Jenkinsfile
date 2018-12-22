@@ -8,6 +8,7 @@ pipeline {
         timestamps()
         timeout(time: 3, unit: 'HOURS')
         buildDiscarder(logRotator(numToKeepStr: '30', artifactNumToKeepStr: '5'))
+        disableConcurrentBuilds()
     }
     environment {
         // In case another branch beside master or develop should be deployed, enter it here
@@ -16,50 +17,52 @@ pipeline {
         DISCORD_WEBHOOK = credentials('991ce248-5da9-4068-9aea-8a6c2c388a19')
     }
     parameters {
-        string(name: 'SPECTRECOIN_RELEASE', defaultValue: '2.2.0', description: 'Which release of Spectrecoin should be used?')
+        string(name: 'SPECTRECOIN_RELEASE', defaultValue: '2.1.0', description: 'Which release of Spectrecoin should be used?')
+        string(name: 'GIT_COMMIT_SHORT', defaultValue: '', description: 'Git short commit, which is part of the name of required archive.')
     }
     stages {
         stage('Notification') {
             steps {
+                // Using result state 'ABORTED' to mark the message on discord with a white border.
+                // Makes it easier to distinguish job-start from job-finished
                 discordSend(
-                        description: "**Started build of branch $BRANCH_NAME**\n",
-                        footer: 'Jenkins - the builder',
+                        description: "Started build #$env.BUILD_NUMBER",
                         image: '',
                         link: "$env.BUILD_URL",
                         successful: true,
+                        result: "ABORTED",
                         thumbnail: 'https://wiki.jenkins-ci.org/download/attachments/2916393/headshot.png',
                         title: "$env.JOB_NAME",
                         webhookURL: "${DISCORD_WEBHOOK}"
                 )
             }
         }
-        stage('Just build Spectrecoin image') {
+        stage('Build Spectrecoin image') {
             when {
                 not {
-                    anyOf { branch 'develop'; branch 'master'; branch "${BRANCH_TO_DEPLOY}" }
+                    branch 'master'
                 }
             }
             steps {
                 script {
-                    docker.build(
-                            "spectreproject/docker-spectrecoind",
-                            "--rm --build-arg DOWNLOAD_URL=https://github.com/spectrecoin/spectre/releases/download/latest/Spectrecoin-latest-Ubuntu.tgz ."
-                    )
+                    withDockerRegistry(credentialsId: '051efa8c-aebd-40f7-9cfd-0053c413266e') {
+                        sh "docker build \\\n" +
+                                "--rm \\\n" +
+                                "--build-arg DOWNLOAD_URL=https://github.com/spectrecoin/spectre/releases/download/${SPECTRECOIN_RELEASE}/Spectrecoin-${SPECTRECOIN_RELEASE}-${GIT_COMMIT_SHORT}-Ubuntu.tgz \\\n" +
+                                "-t spectreproject/docker-spectrecoind:${SPECTRECOIN_RELEASE} \\\n" +
+                                "."
+                    }
                 }
             }
         }
-        stage('Build and upload Spectrecoin image (develop)') {
+        stage('Upload Spectrecoin image (develop)') {
             when {
                 anyOf { branch 'develop'; branch "${BRANCH_TO_DEPLOY}" }
             }
             steps {
                 script {
-                    def spectre_image = docker.build(
-                            "spectreproject/docker-spectrecoind",
-                            "--rm --build-arg DOWNLOAD_URL=https://github.com/spectrecoin/spectre/releases/download/latest/Spectrecoin-latest-Ubuntu.tgz ."
-                    )
-                    docker.withRegistry('https://registry.hub.docker.com', '051efa8c-aebd-40f7-9cfd-0053c413266e') {
-                        spectre_image.push("latest")
+                    withDockerRegistry(credentialsId: '051efa8c-aebd-40f7-9cfd-0053c413266e') {
+                        sh "docker push spectreproject/docker-spectrecoind:${SPECTRECOIN_RELEASE}"
                     }
                 }
             }
@@ -70,12 +73,13 @@ pipeline {
             }
             steps {
                 script {
-                    def spectre_image = docker.build(
-                            "spectreproject/docker-spectrecoind",
-                            "--rm --build-arg DOWNLOAD_URL=https://github.com/spectrecoin/spectre/releases/download/${SPECTRECOIN_RELEASE}/Spectrecoin-${SPECTRECOIN_RELEASE}-Ubuntu.tgz ."
-                    )
-                    docker.withRegistry('https://registry.hub.docker.com', '051efa8c-aebd-40f7-9cfd-0053c413266e') {
-                        spectre_image.push("${SPECTRECOIN_RELEASE}")
+                    withDockerRegistry(credentialsId: '051efa8c-aebd-40f7-9cfd-0053c413266e') {
+                        sh "docker build \\\n" +
+                                "--rm \\\n" +
+                                "--build-arg DOWNLOAD_URL=https://github.com/spectrecoin/spectre/releases/download/${SPECTRECOIN_RELEASE}/Spectrecoin-${SPECTRECOIN_RELEASE}-${GIT_COMMIT_SHORT}-Ubuntu.tgz \\\n" +
+                                "-t spectreproject/docker-spectrecoind:${SPECTRECOIN_RELEASE} \\\n" +
+                                "."
+                        sh "docker push spectreproject/docker-spectrecoind:${SPECTRECOIN_RELEASE}"
                     }
                 }
             }
@@ -97,8 +101,7 @@ pipeline {
                     )
                 }
                 discordSend(
-                        description: "**Build:**  #$env.BUILD_NUMBER\n**Status:**  Success\n",
-                        footer: 'Jenkins - the builder',
+                        description: "Build #$env.BUILD_NUMBER finished successfully",
                         image: '',
                         link: "$env.BUILD_URL",
                         successful: true,
@@ -117,11 +120,11 @@ pipeline {
 //                    replyTo: "to@be.defined"
             )
             discordSend(
-                    description: "**Build:**  #$env.BUILD_NUMBER\n**Status:**  Unstable\n",
-                    footer: 'Jenkins - the builder',
+                    description: "Build #$env.BUILD_NUMBER finished unstable",
                     image: '',
                     link: "$env.BUILD_URL",
                     successful: true,
+                    result: "UNSTABLE",
                     thumbnail: 'https://wiki.jenkins-ci.org/download/attachments/2916393/headshot.png',
                     title: "$env.JOB_NAME",
                     webhookURL: "${DISCORD_WEBHOOK}"
@@ -136,8 +139,7 @@ pipeline {
 //                    replyTo: "to@be.defined"
             )
             discordSend(
-                    description: "**Build:**  #$env.BUILD_NUMBER\n**Status:**  Failed\n",
-                    footer: 'Jenkins - the builder',
+                    description: "Build #$env.BUILD_NUMBER failed!",
                     image: '',
                     link: "$env.BUILD_URL",
                     successful: false,
