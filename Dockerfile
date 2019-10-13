@@ -59,7 +59,7 @@ VOLUME ["/spectrecoin"]
 EXPOSE 8332 8333 18332 18333
 
 # Download and install daemon binary
-ARG DOWNLOAD_URL=https://github.com/spectrecoin/spectre/releases/download/latest/Spectrecoin-latest-Ubuntu.tgz
+ARG DOWNLOAD_URL=https://github.com/spectrecoin/spectre/releases/download/latest/Spectrecoin-latest-Ubuntu-18-04.tgz
 ADD ${DOWNLOAD_URL} /tmp/spectrecoin.tgz
 RUN cd / \
  && tar xzf /tmp/spectrecoin.tgz \
