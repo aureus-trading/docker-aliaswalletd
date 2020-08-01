@@ -17,7 +17,7 @@ pipeline {
         DISCORD_WEBHOOK = credentials('991ce248-5da9-4068-9aea-8a6c2c388a19')
     }
     parameters {
-        string(name: 'SPECTRECOIN_RELEASE', defaultValue: '4.1.0', description: 'Which release of Spectrecoin should be used?')
+        string(name: 'ALIAS_RELEASE', defaultValue: '4.1.0', description: 'Which release of Spectrecoin should be used?')
         string(name: 'GIT_COMMIT_SHORT', defaultValue: '', description: 'Git short commit, which is part of the name of required archive.')
     }
     stages {
@@ -48,8 +48,8 @@ pipeline {
                     withDockerRegistry(credentialsId: '051efa8c-aebd-40f7-9cfd-0053c413266e') {
                         sh "docker build \\\n" +
                                 "--rm \\\n" +
-                                "--build-arg DOWNLOAD_URL=https://github.com/spectrecoin/spectre/releases/download/${SPECTRECOIN_RELEASE}/Spectrecoin-${SPECTRECOIN_RELEASE}-${GIT_COMMIT_SHORT}-Ubuntu-18-04.tgz \\\n" +
-                                "-t spectreproject/docker-spectrecoind:${SPECTRECOIN_RELEASE} \\\n" +
+                                "--build-arg DOWNLOAD_URL=https://github.com/spectrecoin/spectre/releases/download/${ALIAS_RELEASE}/Spectrecoin-${ALIAS_RELEASE}-${GIT_COMMIT_SHORT}-Ubuntu-18-04.tgz \\\n" +
+                                "-t spectreproject/docker-spectrecoind:${ALIAS_RELEASE} \\\n" +
                                 "."
                     }
                 }
@@ -62,7 +62,7 @@ pipeline {
             steps {
                 script {
                     withDockerRegistry(credentialsId: '051efa8c-aebd-40f7-9cfd-0053c413266e') {
-                        sh "docker push spectreproject/docker-spectrecoind:${SPECTRECOIN_RELEASE}"
+                        sh "docker push spectreproject/docker-spectrecoind:${ALIAS_RELEASE}"
                     }
                 }
             }
@@ -76,10 +76,10 @@ pipeline {
                     withDockerRegistry(credentialsId: '051efa8c-aebd-40f7-9cfd-0053c413266e') {
                         sh "docker build \\\n" +
                                 "--rm \\\n" +
-                                "--build-arg DOWNLOAD_URL=https://github.com/spectrecoin/spectre/releases/download/${SPECTRECOIN_RELEASE}/Spectrecoin-${SPECTRECOIN_RELEASE}-${GIT_COMMIT_SHORT}-Ubuntu-18-04.tgz \\\n" +
-                                "-t spectreproject/docker-spectrecoind:${SPECTRECOIN_RELEASE} \\\n" +
+                                "--build-arg DOWNLOAD_URL=https://github.com/spectrecoin/spectre/releases/download/${ALIAS_RELEASE}/Spectrecoin-${ALIAS_RELEASE}-${GIT_COMMIT_SHORT}-Ubuntu-18-04.tgz \\\n" +
+                                "-t spectreproject/docker-spectrecoind:${ALIAS_RELEASE} \\\n" +
                                 "."
-                        sh "docker push spectreproject/docker-spectrecoind:${SPECTRECOIN_RELEASE}"
+                        sh "docker push spectreproject/docker-spectrecoind:${ALIAS_RELEASE}"
                     }
                 }
             }
