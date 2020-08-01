@@ -1,17 +1,17 @@
 [Unit]
-Description=Spectrecoind Docker Container
-Documentation=https://github.com/spectreproject/docker-spectrecoind
-After=network.target docker.socket
-Requires=docker.socket
+Description=Aliaswalletd Docker Container
+Documentation=https://github.com/aliascash/docker-aliaswalletd
+Requires=docker.service
+After=docker.service
 
 [Service]
 RestartSec=10
 Restart=always
 
 # Modify IP6_PREFIX to match network config
-Environment="NAME=spectrecoind"
-Environment="DATA_VOL=spectrecoind-data"
-Environment="IMG=spectreproject/spectrecoind:dev"
+Environment="NAME=aliaswalletd"
+Environment="DATA_VOL=alias-data"
+Environment="IMG=aliascash/docker-aliaswalletd:dev"
 Environment="PORT=8333:8333/tcp"
 
 # To override environment variables, use local configuration directory:
@@ -25,7 +25,7 @@ ExecStartPre=-/usr/bin/docker rm -f $NAME
 ExecStartPre=-/usr/bin/docker pull $IMG
 
 # Main process
-ExecStart=/usr/bin/docker run --rm -v ${DATA_VOL}:/spectrecoin --name ${NAME} -p ${PORT} ${IMG} spectrecoin_oneshot $ARGS
+ExecStart=/usr/bin/docker run --rm -v ${DATA_VOL}:/alias --name ${NAME} -p ${PORT} ${IMG} alias_oneshot $ARGS
 
 [Install]
 WantedBy=multi-user.target
