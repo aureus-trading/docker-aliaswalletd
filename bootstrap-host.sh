@@ -53,5 +53,5 @@ curl https://raw.githubusercontent.com/aliascash/docker-aliaswalletd/master/upst
 start docker-aliaswalletd
 
 set +ex
-echo "Resulting aliaswallet.conf:"
-docker run -v alias-data:/alias --rm ${ALIAS_IMAGE} cat /alias/.aliaswallet/aliaswallet.conf
+echo "Resulting alias.conf:"
+docker run -v alias-data:/alias --rm ${ALIAS_IMAGE} cat /alias/.aliaswallet/alias.conf

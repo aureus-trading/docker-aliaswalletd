@@ -4,13 +4,13 @@ set -ex
 
 # This shouldn't be in the Dockerfile or containers built from the same image
 # will have the same credentials.
-if [ ! -e "$HOME/.aliaswallet/aliaswallet.conf" ]; then
-    mkdir -p $HOME/.aliaswallet
+if [ ! -e "$HOME/.aliaswallet/alias.conf" ]; then
+    mkdir -p "$HOME"/.aliaswallet
 
-    echo "Creating aliaswallet.conf"
+    echo "Creating alias.conf"
 
     # Seed a random password for JSON RPC server
-    cat <<EOF > $HOME/.aliaswallet/aliaswallet.conf
+    cat <<EOF > "$HOME"/.aliaswallet/alias.conf
 disablewallet=${DISABLEWALLET:-1}
 printtoconsole=${PRINTTOCONSOLE:-1}
 rpcuser=${RPCUSER:-aliaswalletrpc}
@@ -20,6 +20,6 @@ EOF
 
 fi
 
-cat $HOME/.aliaswallet/aliaswallet.conf
+cat "$HOME"/.aliaswallet/alias.conf
 
 echo "Initialization completed successfully"

@@ -15,7 +15,7 @@ You can use environment variables to customize config ([see docker run environme
 Or you can use your very own config file like that:
 
         docker run -v alias-data:/alias --name=aliaswalletd-node -d \
-            -p 8333:8333 \
-            -p 127.0.0.1:8332:8332 \
-            -v /etc/myaliaswallet.conf:/alias/.aliaswallet/aliaswallet.conf \
+            -p 37347:37347 \
+            -p 127.0.0.1:36657:36657 \
+            -v /etc/myalias.conf:/alias/.aliaswallet/alias.conf \
             aliascash/docker-aliaswalletd
