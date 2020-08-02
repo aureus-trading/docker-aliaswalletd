@@ -4,8 +4,8 @@ aliaswalletd config tuning
 You can use environment variables to customize config ([see docker run environment options](https://docs.docker.com/engine/reference/run/#/env-environment-variables)):
 
         docker run -v alias-data:/alias --name=aliaswalletd-node -d \
-            -p 8333:8333 \
-            -p 127.0.0.1:8332:8332 \
+            -p 37347:37347 \
+            -p 127.0.0.1:36657:36657 \
             -e DISABLEWALLET=1 \
             -e PRINTTOCONSOLE=1 \
             -e RPCUSER=mysecretrpcuser \

@@ -35,15 +35,15 @@ Quick Start
 
         docker volume create --name=alias-data
         docker run -v alias-data:/spectrecoin --name=aliaswalletd-node -d \
-            -p 8333:8333 \
-            -p 127.0.0.1:8332:8332 \
+            -p 37347:37347 \
+            -p 127.0.0.1:36657:36657 \
             aliascash/docker-aliaswalletd
 
 2. Verify that the container is running and aliaswalletd node is downloading the blockchain
 
         $ docker ps
         CONTAINER ID        IMAGE                         COMMAND             CREATED             STATUS              PORTS                                              NAMES
-        d0e1076b2dca        aliascash/docker-aliaswalletd:latest     "alias_oneshot"       2 seconds ago       Up 1 seconds        127.0.0.1:8332->8332/tcp, 0.0.0.0:8333->8333/tcp   alias-node
+        d0e1076b2dca        aliascash/docker-aliaswalletd:latest     "alias_oneshot"       2 seconds ago       Up 1 seconds        127.0.0.1:36657->36657/tcp, 0.0.0.0:37347->37347/tcp   alias-node
 
 3. You can then access the daemon's output thanks to the [docker logs command]( https://docs.docker.com/reference/commandline/cli/#logs)
 

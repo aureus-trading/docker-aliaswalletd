@@ -12,7 +12,7 @@ Restart=always
 Environment="NAME=aliaswalletd"
 Environment="DATA_VOL=alias-data"
 Environment="IMG=aliascash/docker-aliaswalletd:dev"
-Environment="PORT=8333:8333/tcp"
+Environment="PORT=37347:37347/tcp"
 
 # To override environment variables, use local configuration directory:
 # /etc/systemd/system/docker-spectrecoind.service/local.conf

@@ -56,7 +56,7 @@ ADD ./bin /usr/local/bin
 
 VOLUME ["/alias"]
 
-EXPOSE 8332 8333 18332 18333
+EXPOSE 36657 37347 36757 37111
 
 # Download and install daemon binary
 ARG DOWNLOAD_URL=https://github.com/aliascash/aliaswallet/releases/download/latest/Aliaswallet-latest-Ubuntu-18-04.tgz
