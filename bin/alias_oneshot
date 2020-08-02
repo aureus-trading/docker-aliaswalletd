@@ -3,7 +3,7 @@
 set -ex
 
 # Generate aliaswallet.conf
-aliaswallet_init
+alias_init
 
 if [ $# -gt 0 ]; then
     args=("$@")
