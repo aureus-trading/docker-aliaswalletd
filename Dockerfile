@@ -59,7 +59,7 @@ VOLUME ["/alias"]
 EXPOSE 36657 37347 36757 37111
 
 # Download and install daemon binary
-ARG DOWNLOAD_URL=https://github.com/aliascash/aliaswallet/releases/download/latest/Aliaswallet-latest-Ubuntu-18-04.tgz
+ARG DOWNLOAD_URL=https://github.com/aliascash/alias-wallet/releases/download/latest/Aliaswallet-latest-Ubuntu-18-04.tgz
 ADD ${DOWNLOAD_URL} /tmp/alias.tgz
 RUN cd / \
  && tar xzf /tmp/alias.tgz \
