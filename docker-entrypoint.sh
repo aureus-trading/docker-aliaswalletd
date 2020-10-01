@@ -9,8 +9,8 @@ fi
 
 # allow the container to be started with `--user`
 if [ "$1" = 'alias_oneshot' -a "$(id -u)" = '0' ]; then
-	chown -R spectrecoin .
-	exec gosu spectrecoin "$0" "$@"
+	chown -R aliaswallet .
+	exec gosu aliaswallet "$0" "$@"
 fi
 
 exec "$@"
