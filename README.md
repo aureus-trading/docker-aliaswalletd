@@ -34,7 +34,7 @@ Quick Start
 1. Create a `alias-data` volume to persist the Alias blockchain data, should exit immediately.  The `alias-data` container will store the blockchain when the node container is recreated (software upgrade, reboot, etc):
 
         docker volume create --name=alias-data
-        docker run -v alias-data:/spectrecoin --name=aliaswalletd-node -d \
+        docker run -v alias-data:/alias --name=aliaswalletd-node -d \
             -p 37347:37347 \
             -p 127.0.0.1:36657:36657 \
             aliascash/docker-aliaswalletd
