@@ -48,8 +48,8 @@ pipeline {
                     withDockerRegistry(credentialsId: '051efa8c-aebd-40f7-9cfd-0053c413266e') {
                         sh "docker build \\\n" +
                                 "--rm \\\n" +
-                                "--build-arg DOWNLOAD_URL=https://github.com/spectrecoin/spectre/releases/download/${SPECTRECOIN_RELEASE}/Spectrecoin-${SPECTRECOIN_RELEASE}-${GIT_COMMIT_SHORT}-Ubuntu-18-04.tgz \\\n" +
-                                "-t spectreproject/docker-spectrecoind:${SPECTRECOIN_RELEASE} \\\n" +
+                                "--build-arg DOWNLOAD_URL=https://github.com/aliascash/alias-wallet/releases/download/${ALIAS_RELEASE}/Alias-${ALIAS_RELEASE}-${GIT_COMMIT_SHORT}-Ubuntu-18-04.tgz \\\n" +
+                                "-t aliascash/docker-aliaswalletd:${ALIAS_RELEASE} \\\n" +
                                 "."
                     }
                 }
@@ -76,8 +76,8 @@ pipeline {
                     withDockerRegistry(credentialsId: '051efa8c-aebd-40f7-9cfd-0053c413266e') {
                         sh "docker build \\\n" +
                                 "--rm \\\n" +
-                                "--build-arg DOWNLOAD_URL=https://github.com/spectrecoin/spectre/releases/download/${SPECTRECOIN_RELEASE}/Spectrecoin-${SPECTRECOIN_RELEASE}-${GIT_COMMIT_SHORT}-Ubuntu-18-04.tgz \\\n" +
-                                "-t spectreproject/docker-spectrecoind:${SPECTRECOIN_RELEASE} \\\n" +
+                                "--build-arg DOWNLOAD_URL=https://github.com/aliascash/alias-wallet/releases/download/${ALIAS_RELEASE}/Alias-${ALIAS_RELEASE}-${GIT_COMMIT_SHORT}-Ubuntu-18-04.tgz \\\n" +
+                                "-t aliascash/docker-aliaswalletd:${ALIAS_RELEASE} \\\n" +
                                 "."
                         sh "docker push spectreproject/docker-spectrecoind:${SPECTRECOIN_RELEASE}"
                     }
