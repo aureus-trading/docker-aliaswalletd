@@ -48,7 +48,7 @@ fi
 docker volume create --name=alias-data
 docker run -v alias-data:/alias --rm ${ALIAS_IMAGE} alias_init
 
-# Start spectrecoind via upstart and docker
+# Start aliaswalletd via upstart and docker
 curl https://raw.githubusercontent.com/aliascash/docker-aliaswalletd/master/upstart.init > /etc/init/docker-aliaswalletd.conf
 start docker-aliaswalletd
 
