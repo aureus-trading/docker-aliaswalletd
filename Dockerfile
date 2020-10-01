@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 MAINTAINER HLXEasy <hlxeasy@gmail.com>
 
 ARG USER_ID
@@ -21,12 +21,12 @@ RUN set -x \
 		ca-certificates \
 		dirmngr \
 		gpg \
-		libboost-chrono1.65.1 \
-		libboost-filesystem1.65.1 \
-		libboost-program-options1.65.1 \
-		libboost-thread1.65.1 \
+		libboost-chrono1.67.0 \
+		libboost-filesystem1.67.0 \
+		libboost-program-options1.67.0 \
+		libboost-thread1.67.0 \
 		libcap2 \
-		libevent-2.1-6 \
+		libevent-2.1-7 \
 		libtool \
 		libseccomp2 \
 		mc \
@@ -59,7 +59,7 @@ VOLUME ["/alias"]
 EXPOSE 36657 37347 36757 37111
 
 # Download and install daemon binary
-ARG DOWNLOAD_URL=https://github.com/aliascash/alias-wallet/releases/download/latest/Aliaswallet-latest-Ubuntu-18-04.tgz
+ARG DOWNLOAD_URL=https://github.com/aliascash/alias-wallet/releases/download/latest/Alias-latest-Ubuntu-20-04.tgz
 ADD ${DOWNLOAD_URL} /tmp/alias.tgz
 RUN cd / \
  && tar xzf /tmp/alias.tgz \
