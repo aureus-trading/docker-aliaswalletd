@@ -4,15 +4,15 @@ MAINTAINER HLXEasy <hlxeasy@gmail.com>
 ARG USER_ID
 ARG GROUP_ID
 
-ENV HOME /spectrecoin
+ENV HOME /alias
 
 # add user with specified (or default) user/group ids
 ENV USER_ID ${USER_ID:-1000}
 ENV GROUP_ID ${GROUP_ID:-1000}
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
-RUN groupadd -g ${GROUP_ID} spectrecoin \
-	&& useradd -u ${USER_ID} -g spectrecoin -s /bin/bash -m -d /spectrecoin spectrecoin
+RUN groupadd -g ${GROUP_ID} aliaswallet \
+	&& useradd -u ${USER_ID} -g aliaswallet -s /bin/bash -m -d /alias aliaswallet
 
 # grab gosu for easy step-down from root
 ENV GOSU_VERSION 1.7
@@ -54,20 +54,20 @@ RUN set -x \
 
 ADD ./bin /usr/local/bin
 
-VOLUME ["/spectrecoin"]
+VOLUME ["/alias"]
 
-EXPOSE 8332 8333 18332 18333
+EXPOSE 36657 37347 36757 37111
 
 # Download and install daemon binary
-ARG DOWNLOAD_URL=https://github.com/spectrecoin/spectre/releases/download/latest/Spectrecoin-latest-Ubuntu-18-04.tgz
-ADD ${DOWNLOAD_URL} /tmp/spectrecoin.tgz
+ARG DOWNLOAD_URL=https://github.com/aliascash/alias-wallet/releases/download/latest/Aliaswallet-latest-Ubuntu-18-04.tgz
+ADD ${DOWNLOAD_URL} /tmp/alias.tgz
 RUN cd / \
- && tar xzf /tmp/spectrecoin.tgz \
- && rm -f /usr/local/bin/spectrecoin /tmp/spectrecoin.tgz
+ && tar xzf /tmp/alias.tgz \
+ && rm -f /usr/local/bin/aliaswallet /tmp/alias.tgz
 
-WORKDIR /spectrecoin
+WORKDIR /alias
 
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
 
-CMD ["spectrecoin_oneshot"]
+CMD ["alias_oneshot"]

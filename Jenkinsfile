@@ -17,7 +17,7 @@ pipeline {
         DISCORD_WEBHOOK = credentials('991ce248-5da9-4068-9aea-8a6c2c388a19')
     }
     parameters {
-        string(name: 'SPECTRECOIN_RELEASE', defaultValue: '4.1.0', description: 'Which release of Spectrecoin should be used?')
+        string(name: 'ALIAS_RELEASE', defaultValue: '4.1.0', description: 'Which release of Alias should be used?')
         string(name: 'GIT_COMMIT_SHORT', defaultValue: '', description: 'Git short commit, which is part of the name of required archive.')
     }
     stages {
@@ -37,7 +37,7 @@ pipeline {
                 )
             }
         }
-        stage('Build Spectrecoin image') {
+        stage('Build Alias image') {
             when {
                 not {
                     branch 'master'
@@ -55,19 +55,19 @@ pipeline {
                 }
             }
         }
-        stage('Upload Spectrecoin image (develop)') {
+        stage('Upload Alias image (develop)') {
             when {
                 anyOf { branch 'develop'; branch "${BRANCH_TO_DEPLOY}" }
             }
             steps {
                 script {
                     withDockerRegistry(credentialsId: '051efa8c-aebd-40f7-9cfd-0053c413266e') {
-                        sh "docker push spectreproject/docker-spectrecoind:${SPECTRECOIN_RELEASE}"
+                        sh "docker push aliascash/docker-aliaswalletd:${ALIAS_RELEASE}"
                     }
                 }
             }
         }
-        stage('Build and upload Spectrecoin image (master)') {
+        stage('Build and upload Alias image (master)') {
             when {
                 branch 'master'
             }
@@ -79,7 +79,7 @@ pipeline {
                                 "--build-arg DOWNLOAD_URL=https://github.com/aliascash/alias-wallet/releases/download/${ALIAS_RELEASE}/Alias-${ALIAS_RELEASE}-${GIT_COMMIT_SHORT}-Ubuntu-18-04.tgz \\\n" +
                                 "-t aliascash/docker-aliaswalletd:${ALIAS_RELEASE} \\\n" +
                                 "."
-                        sh "docker push spectreproject/docker-spectrecoind:${SPECTRECOIN_RELEASE}"
+                        sh "docker push aliascash/docker-aliaswalletd:${ALIAS_RELEASE}"
                     }
                 }
             }

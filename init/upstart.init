@@ -1,15 +1,15 @@
-# Copy to /etc/init/docker-spectrecoind.conf
-description "Docker container for spectrecoind p2p node"
+# Copy to /etc/init/docker-aliaswalletd.conf
+description "Docker container for Alias p2p node"
 start on filesystem and started docker
 stop on runlevel [!2345]
 respawn
 pre-start script
   # Clean-up if left behind
-  docker rm -f spectrecoind-node || true
-  
+  docker rm -f aliaswalletd-node || true
+
   # Attempt to always update and fail silently if the network isn't ready
-  docker pull spectreproject/spectrecoind || true
+  docker pull aliascash/docker-aliaswalletd || true
 end script
 script
-  exec docker run --rm -v spectrecoind-data:/spectrecoin --name=spectrecoind-node --rm -p 8333:8333 -p 127.0.0.1:8332:8332 spectreproject/spectrecoind
+  exec docker run --rm -v alias-data:/alias --name=aliaswalletd-node --rm -p 37347:37347 -p 127.0.0.1:36657:36657 aliascash/docker-aliaswalletd
 end script

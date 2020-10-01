@@ -1,12 +1,12 @@
-Spectrecoind for Docker
-===================
+Aliaswalletd for Docker
+=======================
 
-[![Docker Stars](https://img.shields.io/docker/stars/spectreproject/docker-spectrecoind.svg)](https://hub.docker.com/r/spectreproject/docker-spectrecoind/)
-[![Docker Pulls](https://img.shields.io/docker/pulls/spectreproject/docker-spectrecoind.svg)](https://hub.docker.com/r/spectreproject/docker-spectrecoind/)
-[![Build Status](https://ci.spectreproject.io/buildStatus/icon?job=Spectrecoin/docker-spectrecoind/develop/)](https://ci.spectreproject.io/job/Spectrecoin/job/docker-spectrecoind/job/develop/)
-[![ImageLayers](https://images.microbadger.com/badges/image/spectreproject/docker-spectrecoind.svg)](https://microbadger.com/#/images/spectreproject/docker-spectrecoind)
+[![Docker Stars](https://img.shields.io/docker/stars/aliascash/docker-aliaswalletd.svg)](https://hub.docker.com/r/aliascash/docker-aliaswalletd/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/aliascash/docker-aliaswalletd.svg)](https://hub.docker.com/r/aliascash/docker-aliaswalletd/)
+[![Build Status](https://ci.alias.cash/buildStatus/icon?job=Alias/docker-aliaswalletd/develop/)](https://ci.alias.cash/job/Alias/job/docker-aliaswalletd/job/develop/)
+[![ImageLayers](https://images.microbadger.com/badges/image/aliascash/docker-aliaswalletd.svg)](https://microbadger.com/#/images/aliascash/docker-aliaswalletd)
 
-Docker image that runs the Spectrecoin spectrecoind node in a container for easy deployment.
+Docker image that runs the Alias daemon node in a container for easy deployment.
 
 This is a fork of [kylemanna/docker-bitcoind](https://github.com/kylemanna/docker-bitcoind), thx for the great work!
 
@@ -25,29 +25,29 @@ Really Fast Quick Start
 
 One liner for Ubuntu 14.04 LTS machines with JSON-RPC enabled on localhost and adds upstart init script:
 
-    curl https://raw.githubusercontent.com/spectreproject/docker-spectrecoind/master/bootstrap-host.sh | sh -s trusty
+    curl https://raw.githubusercontent.com/aliascash/docker-aliaswalletd/master/bootstrap-host.sh | sh -s trusty
 
 
 Quick Start
 -----------
 
-1. Create a `spectrecoind-data` volume to persist the spectrecoind blockchain data, should exit immediately.  The `spectrecoind-data` container will store the blockchain when the node container is recreated (software upgrade, reboot, etc):
+1. Create a `alias-data` volume to persist the Alias blockchain data, should exit immediately.  The `alias-data` container will store the blockchain when the node container is recreated (software upgrade, reboot, etc):
 
-        docker volume create --name=spectrecoind-data
-        docker run -v spectrecoind-data:/spectrecoin --name=spectrecoind-node -d \
-            -p 8333:8333 \
-            -p 127.0.0.1:8332:8332 \
-            spectreproject/spectrecoind
+        docker volume create --name=alias-data
+        docker run -v alias-data:/spectrecoin --name=aliaswalletd-node -d \
+            -p 37347:37347 \
+            -p 127.0.0.1:36657:36657 \
+            aliascash/docker-aliaswalletd
 
-2. Verify that the container is running and spectrecoind node is downloading the blockchain
+2. Verify that the container is running and aliaswalletd node is downloading the blockchain
 
         $ docker ps
         CONTAINER ID        IMAGE                         COMMAND             CREATED             STATUS              PORTS                                              NAMES
-        d0e1076b2dca        spectreproject/spectrecoind:latest     "spectrecoin_oneshot"       2 seconds ago       Up 1 seconds        127.0.0.1:8332->8332/tcp, 0.0.0.0:8333->8333/tcp   spectrecoind-node
+        d0e1076b2dca        aliascash/docker-aliaswalletd:latest     "alias_oneshot"       2 seconds ago       Up 1 seconds        127.0.0.1:36657->36657/tcp, 0.0.0.0:37347->37347/tcp   alias-node
 
 3. You can then access the daemon's output thanks to the [docker logs command]( https://docs.docker.com/reference/commandline/cli/#logs)
 
-        docker logs -f spectrecoind-node
+        docker logs -f aliaswalletd-node
 
 4. Install optional init scripts for upstart and systemd are in the `init` directory.
 
