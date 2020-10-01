@@ -53,6 +53,7 @@ RUN set -x \
 	&& apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ADD ./bin /usr/local/bin
+RUN chmod +x /usr/local/bin/*
 
 VOLUME ["/alias"]
 
