@@ -2,8 +2,8 @@
 
 set -ex
 
-# Generate spectrecoin.conf
-spectrecoin_init
+# Generate alias.conf
+alias_init
 
 if [ $# -gt 0 ]; then
     args=("$@")
@@ -12,4 +12,4 @@ else
     args=("-rpcallowip=*")
 fi
 
-exec spectrecoind "${args[@]}"
+exec aliaswalletd "${args[@]}"

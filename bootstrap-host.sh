@@ -4,7 +4,7 @@
 #
 set -ex
 
-SPECTRECOIN_IMAGE=${SPECTRECOIN_IMAGE:-spectreproject/spectrecoind}
+ALIAS_IMAGE=${ALIAS_IMAGE:-aliascash/docker-aliaswalletd}
 
 distro=$1
 shift
@@ -35,23 +35,23 @@ if [ "$distro" = "trusty" -o "$distro" = "ubuntu:14.04" ]; then
 fi
 
 # Always clean-up, but fail successfully
-docker kill spectrecoind-node 2>/dev/null || true
-docker rm spectrecoind-node 2>/dev/null || true
-stop docker-spectrecoind 2>/dev/null || true
+docker kill aliaswalletd-node 2>/dev/null || true
+docker rm aliaswalletd-node 2>/dev/null || true
+stop docker-aliaswalletd 2>/dev/null || true
 
 # Always pull remote images to avoid caching issues
-if [ -z "${SPECTRECOIN_IMAGE##*/*}" ]; then
-    docker pull ${SPECTRECOIN_IMAGE}
+if [ -z "${ALIAS_IMAGE##*/*}" ]; then
+    docker pull ${ALIAS_IMAGE}
 fi
 
 # Initialize the data container
-docker volume create --name=spectrecoind-data
-docker run -v spectrecoind-data:/spectrecoin --rm ${SPECTRECOIN_IMAGE} spectrecoin_init
+docker volume create --name=alias-data
+docker run -v alias-data:/alias --rm ${ALIAS_IMAGE} alias_init
 
-# Start spectrecoind via upstart and docker
-curl https://raw.githubusercontent.com/spectreproject/docker-spectrecoind/master/upstart.init > /etc/init/docker-spectrecoind.conf
-start docker-spectrecoind
+# Start aliaswalletd via upstart and docker
+curl https://raw.githubusercontent.com/aliascash/docker-aliaswalletd/master/upstart.init > /etc/init/docker-aliaswalletd.conf
+start docker-aliaswalletd
 
 set +ex
-echo "Resulting spectrecoin.conf:"
-docker run -v spectrecoind-data:/spectrecoin --rm ${SPECTRECOIN_IMAGE} cat /spectrecoin/.spectrecoin/spectrecoin.conf
+echo "Resulting alias.conf:"
+docker run -v alias-data:/alias --rm ${ALIAS_IMAGE} cat /alias/.aliaswallet/alias.conf
