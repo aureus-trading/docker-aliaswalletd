@@ -45,7 +45,7 @@ pipeline {
             }
             steps {
                 script {
-                    withDockerRegistry(credentialsId: '051efa8c-aebd-40f7-9cfd-0053c413266e') {
+                    withDockerRegistry(credentialsId: 'DockerHub-Login') {
                         sh "docker build \\\n" +
                                 "--rm \\\n" +
                                 "--build-arg DOWNLOAD_URL=https://github.com/aliascash/alias-wallet/releases/download/${ALIAS_RELEASE}/Alias-${ALIAS_RELEASE}-${GIT_COMMIT_SHORT}-Ubuntu-20-04.tgz \\\n" +
@@ -61,7 +61,7 @@ pipeline {
             }
             steps {
                 script {
-                    withDockerRegistry(credentialsId: '051efa8c-aebd-40f7-9cfd-0053c413266e') {
+                    withDockerRegistry(credentialsId: 'DockerHub-Login') {
                         sh "docker push aliascash/docker-aliaswalletd:${ALIAS_RELEASE}"
                     }
                 }
@@ -73,7 +73,7 @@ pipeline {
             }
             steps {
                 script {
-                    withDockerRegistry(credentialsId: '051efa8c-aebd-40f7-9cfd-0053c413266e') {
+                    withDockerRegistry(credentialsId: 'DockerHub-Login') {
                         sh "docker build \\\n" +
                                 "--rm \\\n" +
                                 "--build-arg DOWNLOAD_URL=https://github.com/aliascash/alias-wallet/releases/download/${ALIAS_RELEASE}/Alias-${ALIAS_RELEASE}-${GIT_COMMIT_SHORT}-Ubuntu-20-04.tgz \\\n" +
