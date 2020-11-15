@@ -13,7 +13,6 @@ pipeline {
     environment {
         // In case another branch beside master or develop should be deployed, enter it here
         BRANCH_TO_DEPLOY = 'xyz'
-        GITHUB_TOKEN = credentials('github-app')
         DISCORD_WEBHOOK = credentials('DISCORD_WEBHOOK')
     }
     parameters {
