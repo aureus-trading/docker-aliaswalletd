@@ -13,8 +13,7 @@ pipeline {
     environment {
         // In case another branch beside master or develop should be deployed, enter it here
         BRANCH_TO_DEPLOY = 'xyz'
-        GITHUB_TOKEN = credentials('cdc81429-53c7-4521-81e9-83a7992bca76')
-        DISCORD_WEBHOOK = credentials('991ce248-5da9-4068-9aea-8a6c2c388a19')
+        DISCORD_WEBHOOK = credentials('DISCORD_WEBHOOK')
     }
     parameters {
         string(name: 'ALIAS_RELEASE', defaultValue: '4.1.0', description: 'Which release of Alias should be used?')
@@ -28,12 +27,12 @@ pipeline {
                 discordSend(
                         description: "Started build #$env.BUILD_NUMBER",
                         image: '',
-                        link: "$env.BUILD_URL",
+                        //link: "$env.BUILD_URL",
                         successful: true,
                         result: "ABORTED",
                         thumbnail: 'https://wiki.jenkins-ci.org/download/attachments/2916393/headshot.png',
                         title: "$env.JOB_NAME",
-                        webhookURL: "${DISCORD_WEBHOOK}"
+                        webhookURL: DISCORD_WEBHOOK
                 )
             }
         }
@@ -45,7 +44,7 @@ pipeline {
             }
             steps {
                 script {
-                    withDockerRegistry(credentialsId: '051efa8c-aebd-40f7-9cfd-0053c413266e') {
+                    withDockerRegistry(credentialsId: 'DockerHub-Login') {
                         sh "docker build \\\n" +
                                 "--rm \\\n" +
                                 "--build-arg DOWNLOAD_URL=https://github.com/aliascash/alias-wallet/releases/download/${ALIAS_RELEASE}/Alias-${ALIAS_RELEASE}-${GIT_COMMIT_SHORT}-Ubuntu-20-04.tgz \\\n" +
@@ -61,7 +60,7 @@ pipeline {
             }
             steps {
                 script {
-                    withDockerRegistry(credentialsId: '051efa8c-aebd-40f7-9cfd-0053c413266e') {
+                    withDockerRegistry(credentialsId: 'DockerHub-Login') {
                         sh "docker push aliascash/docker-aliaswalletd:${ALIAS_RELEASE}"
                     }
                 }
@@ -73,7 +72,7 @@ pipeline {
             }
             steps {
                 script {
-                    withDockerRegistry(credentialsId: '051efa8c-aebd-40f7-9cfd-0053c413266e') {
+                    withDockerRegistry(credentialsId: 'DockerHub-Login') {
                         sh "docker build \\\n" +
                                 "--rm \\\n" +
                                 "--build-arg DOWNLOAD_URL=https://github.com/aliascash/alias-wallet/releases/download/${ALIAS_RELEASE}/Alias-${ALIAS_RELEASE}-${GIT_COMMIT_SHORT}-Ubuntu-20-04.tgz \\\n" +
@@ -86,9 +85,6 @@ pipeline {
         }
     }
     post {
-        always {
-            sh "docker system prune --all --force"
-        }
         success {
             script {
                 if (!hudson.model.Result.SUCCESS.equals(currentBuild.getPreviousBuild()?.getResult())) {
@@ -103,11 +99,11 @@ pipeline {
                 discordSend(
                         description: "Build #$env.BUILD_NUMBER finished successfully",
                         image: '',
-                        link: "$env.BUILD_URL",
+                        //link: "$env.BUILD_URL",
                         successful: true,
                         thumbnail: 'https://wiki.jenkins-ci.org/download/attachments/2916393/headshot.png',
                         title: "$env.JOB_NAME",
-                        webhookURL: "${DISCORD_WEBHOOK}"
+                        webhookURL: DISCORD_WEBHOOK
                 )
             }
         }
@@ -122,12 +118,12 @@ pipeline {
             discordSend(
                     description: "Build #$env.BUILD_NUMBER finished unstable",
                     image: '',
-                    link: "$env.BUILD_URL",
+                    //link: "$env.BUILD_URL",
                     successful: true,
                     result: "UNSTABLE",
                     thumbnail: 'https://wiki.jenkins-ci.org/download/attachments/2916393/headshot.png',
                     title: "$env.JOB_NAME",
-                    webhookURL: "${DISCORD_WEBHOOK}"
+                    webhookURL: DISCORD_WEBHOOK
             )
         }
         failure {
@@ -141,11 +137,11 @@ pipeline {
             discordSend(
                     description: "Build #$env.BUILD_NUMBER failed!",
                     image: '',
-                    link: "$env.BUILD_URL",
+                    //link: "$env.BUILD_URL",
                     successful: false,
                     thumbnail: 'https://wiki.jenkins-ci.org/download/attachments/2916393/headshot.png',
                     title: "$env.JOB_NAME",
-                    webhookURL: "${DISCORD_WEBHOOK}"
+                    webhookURL: DISCORD_WEBHOOK
             )
         }
     }
