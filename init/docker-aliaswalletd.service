@@ -15,7 +15,7 @@ Environment="IMG=aliascash/docker-aliaswalletd:dev"
 Environment="PORT=37347:37347/tcp"
 
 # To override environment variables, use local configuration directory:
-# /etc/systemd/system/docker-spectrecoind.service/local.conf
+# /etc/systemd/system/docker-aliaswalletd.service/local.conf
 # http://www.freedesktop.org/software/systemd/man/systemd.unit.html
 
 # Clean-up bad state if still hanging around
