@@ -2,10 +2,21 @@
 
 set -ex
 
+if [[ ${TESTNET} = true ]] ; then
+    useTestnetFolder="/testnet"
+    # See class CTestNetParams on chainparams.cpp
+    echo "Writing TESTNET RPC port to alias.conf"
+    rpcport=36757
+else
+    # See class CMainParams on chainparams.cpp
+    echo "Writing MAINNET RPC port to alias.conf"
+    rpcport=36657
+fi
+
 # This shouldn't be in the Dockerfile or containers built from the same image
 # will have the same credentials.
 if [ ! -e "$HOME/.aliaswallet/alias.conf" ]; then
-    mkdir -p "$HOME"/.aliaswallet
+    mkdir -p "$HOME"/.aliaswallet${useTestnetFolder}
 
     echo "Creating alias.conf"
 
@@ -15,7 +26,7 @@ disablewallet=${DISABLEWALLET:-1}
 printtoconsole=${PRINTTOCONSOLE:-1}
 rpcuser=${RPCUSER:-aliaswalletrpc}
 rpcpassword=${RPCPASSWORD:-$(dd if=/dev/urandom bs=33 count=1 2>/dev/null | base64)}
-rpcport=36657
+rpcport=${rpcport}
 EOF
 
 fi
