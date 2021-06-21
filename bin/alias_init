@@ -28,7 +28,13 @@ rpcuser=${RPCUSER:-aliaswalletrpc}
 rpcpassword=${RPCPASSWORD:-$(dd if=/dev/urandom bs=33 count=1 2>/dev/null | base64)}
 rpcport=${rpcport}
 EOF
-
+elif [ -n "${RPCUSER}" ] && [ -n "${RPCPASSWORD}" ] ; then
+    # This might be a container restart with changed credentials,
+    # so update them on alias.conf.
+    sed -i \
+        -e "s/^rpcuser=.*\$/rpcuser=${RPCUSER}/g" \
+        -e "s/^rpcpassword=.*\$/rpcpassword=${RPCPASSWORD}/g" \
+        "$HOME/.aliaswallet/alias.conf"
 fi
 
 cat "$HOME"/.aliaswallet/alias.conf
