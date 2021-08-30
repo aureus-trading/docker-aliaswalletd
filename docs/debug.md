@@ -16,7 +16,7 @@
 
     docker run -v alias-data:/alias --rm -it aliascash/docker-aliaswalletd bash -l
 
-You can also attach bash into running container to debug running spectrecoind
+You can also attach bash into running container to debug running aliaswalletd
 
     docker exec -it aliaswalletd-node bash -l
 

@@ -8,8 +8,12 @@ alias_init
 if [ $# -gt 0 ]; then
     args=("$@")
 else
-#    args=("-rpcallowip=::/0")
-    args=("-rpcallowip=*")
+    if [[ ${TESTNET} = true ]] ; then
+        echo "Using TESTNET"
+        args=("-rpcallowip=*" "-testnet")
+    else
+        args=("-rpcallowip=*")
+    fi
 fi
 
 exec aliaswalletd "${args[@]}"

@@ -3,7 +3,6 @@ Aliaswalletd for Docker
 
 [![Docker Stars](https://img.shields.io/docker/stars/aliascash/docker-aliaswalletd.svg)](https://hub.docker.com/r/aliascash/docker-aliaswalletd/)
 [![Docker Pulls](https://img.shields.io/docker/pulls/aliascash/docker-aliaswalletd.svg)](https://hub.docker.com/r/aliascash/docker-aliaswalletd/)
-[![Build Status](https://ci.alias.cash/buildStatus/icon?job=Alias/docker-aliaswalletd/develop/)](https://ci.alias.cash/job/Alias/job/docker-aliaswalletd/job/develop/)
 [![ImageLayers](https://images.microbadger.com/badges/image/aliascash/docker-aliaswalletd.svg)](https://microbadger.com/#/images/aliascash/docker-aliaswalletd)
 
 Docker image that runs the Alias daemon node in a container for easy deployment.

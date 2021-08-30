@@ -19,3 +19,10 @@ Or you can use your very own config file like that:
             -p 127.0.0.1:36657:36657 \
             -v /etc/myalias.conf:/alias/.aliaswallet/alias.conf \
             aliascash/docker-aliaswalletd
+
+## MAINNET vs. TESTNET
+If you want to use the image with TESTNET, just add this option to the cmdline:
+
+```
+-e TESTNET=true
+```
